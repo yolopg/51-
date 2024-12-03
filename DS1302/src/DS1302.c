@@ -67,13 +67,13 @@ void DS1302_SetTime(DS1302_Time*time)
     DS1302_WriteByte(DS1302_WP, 0x00);  // 解除写保护
 
     // 设置秒、分、时、日期、月、年等
-    DS1302_WriteByte(DS1302_SECOND, time->second);  // 秒
-    DS1302_WriteByte(DS1302_MINUTE, time->minute);  // 分
-    DS1302_WriteByte(DS1302_HOUR, time->hour);    // 时
-    DS1302_WriteByte(DS1302_DATE, time->date);    // 日期
-    DS1302_WriteByte(DS1302_MONTH, time->month);   // 月
-    DS1302_WriteByte(DS1302_YEAR, time->year);    // 年
-    DS1302_WriteByte(DS1302_DAY, time->day);     // 星期几
+    DS1302_WriteByte(DS1302_SECOND, time->second/10*16+time->second%10);  // 秒
+    DS1302_WriteByte(DS1302_MINUTE, time->minute/10*16+time->hour%10);  // 分
+    DS1302_WriteByte(DS1302_HOUR, time->hour/10*16+time->hour%10);    // 时
+    DS1302_WriteByte(DS1302_DATE, time->date/10*16+time->date%10);    // 日期
+    DS1302_WriteByte(DS1302_MONTH, time->month/10*16+time->month%10);   // 月
+    DS1302_WriteByte(DS1302_YEAR, time->year/10*16+time->year%10);    // 年
+    DS1302_WriteByte(DS1302_DAY, time->day/10*16+time->day%10);     // 星期几
 
     DS1302_WriteByte(DS1302_WP, 0x80);  // 恢复写保护
 }
@@ -81,11 +81,19 @@ void DS1302_SetTime(DS1302_Time*time)
 // 从 DS1302 读取时间
 void DS1302_ReadTime(DS1302_Time* time)
 {
-    time->second = DS1302_ReadByte(DS1302_SECOND);  // 秒
-    time->minute = DS1302_ReadByte(DS1302_MINUTE);  // 分
-    time->hour   = DS1302_ReadByte(DS1302_HOUR);    // 时
-    time->date   = DS1302_ReadByte(DS1302_DATE);    // 日期
-    time->month  = DS1302_ReadByte(DS1302_MONTH);   // 月
-    time->year   = DS1302_ReadByte(DS1302_YEAR);    // 年
-    time->day    = DS1302_ReadByte(DS1302_DAY);     // 星期几
+    unsigned char tmp=0;
+    tmp = DS1302_ReadByte(DS1302_SECOND);  //BCD码转十进制数
+    time->second=tmp/16*10+tmp%16;
+    tmp= DS1302_ReadByte(DS1302_MINUTE);  // 分
+    time->minute=tmp/16*10+tmp%16;
+    tmp  = DS1302_ReadByte(DS1302_HOUR);    // 时
+    time->hour=tmp/16*10+tmp%16;
+    tmp   = DS1302_ReadByte(DS1302_DATE);    // 日期
+    time->date=tmp/16*10+tmp%16;
+    tmp  = DS1302_ReadByte(DS1302_MONTH);   // 月
+    time->month=tmp/16*10+tmp%16;
+    tmp  = DS1302_ReadByte(DS1302_YEAR);    // 年
+    time->year=tmp/16*10+tmp%16;
+    tmp   = DS1302_ReadByte(DS1302_DAY);     // 星期几
+    time->day=tmp/16*10+tmp%16;
 }

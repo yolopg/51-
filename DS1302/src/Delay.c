@@ -1,8 +1,15 @@
 #include"Delay.h"
-void delay(unsigned int ms)
+
+void delay(unsigned int Xms)		//@12.000MHz
 {
-    unsigned int i, j;
-    for (i = 0; i < ms; i++) {
-        for (j = 0; j < 120; j++);
-    }
+	unsigned char i, j;
+	while(Xms--)
+	{
+		i = 12;
+		j = 169;
+		do
+		{
+			while (--j);
+		} while (--i);
+	}
 }

@@ -22,7 +22,7 @@ typedef struct {
     unsigned char date;
     unsigned char month;
     unsigned char year;
-} DS1302_Time;
+} DS1302_Time; 
 //
 sbit DS1302_SCLK=P3^6;
 sbit DS1302_IO=P3^4;
